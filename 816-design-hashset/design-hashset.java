@@ -1,26 +1,35 @@
+import java.util.*;
+
 class MyHashSet {
-    private boolean [] arr;
+    private int M; 
+    private List<Integer>[] buckets;
+
     public MyHashSet() {
-      arr=new boolean[1000001];  
+        M = 15000; // bucket size
+        buckets = new List[M];
+        for (int i = 0; i < M; i++) {
+            buckets[i] = new LinkedList<>();
+        }
     }
-    
+
+    private int getIndex(int key) {
+        return key % M;
+    }
+
     public void add(int key) {
-        arr[key]=true;
+        int index = getIndex(key);
+        if (!buckets[index].contains(key)) {
+            buckets[index].add(key);
+        }
     }
-    
+
     public void remove(int key) {
-        arr[key]=false;
+        int index = getIndex(key);
+        buckets[index].remove((Integer) key);
     }
-    
+
     public boolean contains(int key) {
-        return arr[key];
+        int index = getIndex(key);
+        return buckets[index].contains(key);
     }
 }
-
-/**
- * Your MyHashSet object will be instantiated and called as such:
- * MyHashSet obj = new MyHashSet();
- * obj.add(key);
- * obj.remove(key);
- * boolean param_3 = obj.contains(key);
- */
