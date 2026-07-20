@@ -1,36 +1,36 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
-       int v = graph.length;
-       int vis[]= new int[v];
-       int pathvis[]= new int[v];
-       int check[]= new int [v];
-       for(int i=0;i<v;i++){
-        if(vis[i]==0){
-            dfs(i,graph,vis,pathvis,check);
+        int v = graph.length;
+        List<List<Integer>> adjRev= new ArrayList<>();
+        for(int i=0;i<v;i++){
+          adjRev.add(new ArrayList<>());
         }
-       }
-        List<Integer> safeNodes = new ArrayList<>();
-        for(int i = 0; i < v; i++) {
-            if(check[i] == 1) safeNodes.add(i);
-        }
-
-        return safeNodes; 
-    }
-    public boolean dfs(int node, int[][]graph,int vis[],int pathVis[],int check[]){
-        vis[node]=1;
-        pathVis[node]=1;
-        check[node]=0;
-        for (int it : graph[node]) {
-            if (vis[it] == 0) {
-                if (dfs(it, graph, vis, pathVis, check)) {
-                    return true;
-                }
-            } else if (pathVis[it] == 1) {
-                return true;
+        int []indegree = new int[v];
+        for(int i=0;i<v;i++){
+            for(int it : graph[i]){
+                adjRev.get(it).add(i);//making from 0->1 to 1->0
+                indegree[i]++;
             }
         }
-       check[node] = 1;   // mark as safe
-        pathVis[node] = 0; // remove from current path
-        return false; 
+        Queue<Integer> que = new LinkedList<>();
+        ArrayList<Integer> ans= new ArrayList<>();
+        //add all node to queue with indegree =0
+        for (int i = 0; i < v; i++) {
+            if (indegree[i] == 0) {
+                que.add(i);
+            }
+        }
+        while(!que.isEmpty()){
+            int node = que.poll();
+            ans.add(node);
+            for(int it : adjRev.get(node)){
+                indegree[it]--;
+                if (indegree[it] == 0) {
+                    que.add(it);
+                }
+            }
+        }
+        Collections.sort(ans);
+        return ans;
     }
 }
