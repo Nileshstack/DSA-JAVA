@@ -1,9 +1,15 @@
 class Solution {
-    public void dfs(ArrayList<ArrayList<Integer>> adj, boolean visited[],int node){
+    public void bfs(ArrayList<ArrayList<Integer>> adj, boolean visited[],int node){
+        Queue<Integer> que = new LinkedList<>();
+        que.offer(node);
         visited[node]=true;
-        for(int v : adj.get(node)){
-            if(!visited[v]){
-                dfs(adj,visited,v);
+        while(!que.isEmpty()){
+            int u=que.poll();
+            for(int neighbour: adj.get(u)){
+                if(!visited[neighbour]){
+                    visited[neighbour]=true;
+                que.offer(neighbour);
+                }
             }
         }
     }
@@ -25,7 +31,7 @@ class Solution {
         int p=0;
         for(int i=0;i<isConnected.length;i++){
             if(!visited[i]){
-                dfs(adj,visited,i);
+                bfs(adj,visited,i);
                 p++;
             }
         } 
