@@ -1,18 +1,34 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int n= nums.length;
-        if(nums.length == 0) return 0;
-        int[] dp = new int[n];
-        Arrays.fill(dp, 1); 
-        int m=1;
-        for(int i=1;i<n;i++){
-            for(int j=0;j<i;j++){
-                if(nums[i]>nums[j]){
-                    dp[i]=Math.max(dp[i],dp[j]+1);
-                    m= Math.max(m,dp[i]);
-                }
+        //using Ptience sort
+        ArrayList<Integer> sorted = new ArrayList<>();
+
+        for (int num : nums) {
+            int idx = lowerBound(sorted, num);
+
+            if (idx == sorted.size()) {
+                sorted.add(num);
+            } else {
+                sorted.set(idx, num);
             }
         }
-        return m;
+
+        return sorted.size();
+    }
+
+    private int lowerBound(ArrayList<Integer> list, int target) {
+        int left = 0, right = list.size();
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (list.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return left;
     }
 }
