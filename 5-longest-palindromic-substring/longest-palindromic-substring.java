@@ -5,37 +5,35 @@ class Solution {
         for(boolean[] row : dp){
             Arrays.fill(row,false);
         }
+        int max=0;
+        int sp=0;
         //creating the matreic with T and F value.
         for(int L=1;L<=n;L++){
             for(int i=0;i+L-1<n;i++){
                 int j= i+L-1;
                 if(i==j){
                     dp[i][j]= true;
+                    max=1;
                 }
                 else if(i+1==j){
                     dp[i][j]=(s.charAt(i)==s.charAt(j));
+                    if(dp[i][j]){
+                        max=2;
+                       sp=i;
+                    }
                 }
                 else{
                     dp[i][j]=((s.charAt(i)==s.charAt(j))&& dp[i+1][j-1]);
-                }
-            }
-        }
-        //finding the starting and ending point
-        int max=0;
-        int sp=0;
-        int ep=0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(dp[i][j]){
-                    int len = j-i+1;
-                    if(len>max){
+                    int len=j-i+1;
+                    if(dp[i][j]){
+                        if(len>max){
                         max=len;
                         sp=i;
-                        ep=j;
-                    } 
+                    }
+                    }
                 }
             }
         }
-        return s.substring(sp,ep+1);
+        return s.substring(sp,sp+max);
     }
 }
