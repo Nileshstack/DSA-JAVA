@@ -13,7 +13,7 @@ class Solution {
         }
         for(int i=1;i<n;i++){
             for(int j=1;j<m;j++){    
-                    dp[i][j]= Math.min((dp[i-1][j]+grid[i][j]),(dp[i][j-1]+grid[i][j]));
+                    dp[i][j]= grid[i][j]+Math.min(dp[i-1][j],dp[i][j-1]);
             }
         }
         return dp[n-1][m-1];
