@@ -1,22 +1,22 @@
 class Solution {
     public boolean solve(String s, String t,int i,int j,int dp[][]){
-        if( j==t.length() && i<s.length() ){
-            return false;
-        }        
-        if(i==s.length() && j<=t.length()){
-            return true;
-        }
+        if (i == s.length()) return true;
+        if (j == t.length()) return false;
+
         if (dp[i][j] != -1) {
             return dp[i][j] == 1;
         }
 
+        boolean ans;
+
         if (s.charAt(i) == t.charAt(j)) {
-            dp[i][j] = solve(s, t, i + 1, j + 1, dp) ? 1 : 0;
+            ans = solve(s, t, i + 1, j + 1, dp);
         } else {
-            dp[i][j] = solve(s, t, i, j + 1, dp) ? 1 : 0;
+            ans = solve(s, t, i, j + 1, dp);
         }
 
-        return dp[i][j] == 1;
+        dp[i][j] = ans ? 1 : 0;
+        return ans;
     }
     public boolean isSubsequence(String s, String t) {
         int n= s.length();
