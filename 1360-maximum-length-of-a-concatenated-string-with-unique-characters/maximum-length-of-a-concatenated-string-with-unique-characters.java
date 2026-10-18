@@ -11,21 +11,27 @@ class Solution {
         }
         return false;
     }
-    public int solve(int i,List<String> arr, String sb,int n){
+    public int solve(int i,List<String> arr, String sb,int n,Map<String,Integer> map){
         if(i>=n) return sb.length();
         int inc=0;
         int exc=0;
-        if(hasDuplicate(arr.get(i),sb.toString())){
-             exc= solve(i+1,arr,sb,n);
-        }else{
-             exc=solve(i+1,arr,sb,n);
-             inc = solve(i+1,arr,sb+arr.get(i),n);
+        String key = i + "|" + sb;
+         if (map.containsKey(key)) {
+            return map.get(key);
         }
-        return Math.max(inc,exc);
+        if(hasDuplicate(arr.get(i),sb.toString())){
+             exc= solve(i+1,arr,sb,n,map);
+        }else{
+             exc=solve(i+1,arr,sb,n,map);
+             inc = solve(i+1,arr,sb+arr.get(i),n,map);
+        }
+        int ans = Math.max(inc, exc);
+             map.put(key, ans);
+        return ans;
     }
     public int maxLength(List<String> arr) {
         int n = arr.size();
         Map<String,Integer> map = new HashMap<>();
-        return solve(0,arr,"",n);
+        return solve(0,arr,"",n,map);
     }
 }
