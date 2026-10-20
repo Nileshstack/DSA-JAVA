@@ -1,6 +1,10 @@
 class Solution {
     public boolean solve(int[]nums,int i,int[] dp){
         if(i>=nums.length-1) return true;
+        if(nums[i]==0){
+            dp[i]=0;
+            return false;
+        }
         if(dp[i]!=-1) return dp[i]==1;
         for(int j=1;j<=nums[i];j++){
             if (solve(nums, i + j,dp)) {
