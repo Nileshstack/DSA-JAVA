@@ -17,9 +17,29 @@ class Solution {
        int n= nums1.length;
        int m = nums2.length;
        int [][] dp = new int[n][m];
-       for(int[] row : dp){
-        Arrays.fill(row,-1);
-       }
-       return solve(nums1,nums2,0,0,dp); 
+       for(int i = n-1;i>=0;i--){
+        for(int j= m-1;j>=0;j--){
+            int take=0;
+            if(nums1[i]==nums2[j]){
+                 take =1;
+                if(i+1<n && j+1<m){
+                    take+= dp[i+1][j+1];
+                }
+            }
+                    int fix_i=0;
+                    int fix_j=0;
+                    if(i+1<n){
+                        fix_i= dp[i+1][j];
+                    }
+                    if(j+1<m){
+                        fix_j=dp[i][j+1];
+                    }
+                    dp[i][j]= Math.max(take, Math.max(fix_i,fix_j));
+                
+            
+
+        }
+       } 
+       return dp[0][0];
     }
 }
