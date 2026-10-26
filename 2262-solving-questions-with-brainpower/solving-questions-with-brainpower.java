@@ -7,10 +7,21 @@ class Solution {
         long skip = solve(que,i+1,dp);
         return dp[i]= Math.max(take,skip);
     }
-    public long mostPoints(int[][] questions) {
-        long []dp = new long[questions.length];
-            Arrays.fill(dp,-1);
-        
-        return solve(questions,0,dp);
+    public long mostPoints(int[][] que) {
+        long []dp = new long[que.length];
+        for(int j = que.length-1;j>=0;j--){
+            long take=que[j][0];
+            if(j+1+que[j][1]<que.length){
+                take+=dp[j+1+que[j][1]];
+            }
+            long skip=0;
+            if(j<que.length-1){
+                skip= dp[j+1];
+            }
+
+            dp[j]= Math.max(take,skip);
+        }
+            return dp[0];
     }
+
 }
